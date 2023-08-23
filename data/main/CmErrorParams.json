@@ -1,0 +1,66 @@
+{
+  "constants": {
+    "Am": 0.0001,
+    "Sw": 1,
+    "T1m": 1,
+    "T2m": 0.1,
+    "TE": 0.020,
+    "TR": 2.0,
+    "cw_csf": 53.89,
+    "cw_grey": 43.33,
+    "cw_white": 35.89,
+    "f_csf": 0.1,
+    "f_grey": 0.7,
+    "f_white": 0.2,
+    "T1_csf": 3.817,
+    "T1_grey": 1.122,
+    "T1_white": 0.758,
+    "T2_csf": 1.15,
+    "T2_grey": 0.079,
+    "T2_white": 0.085
+  },
+  "errors": {
+    "upper_bound": {
+      "dSw": 0.05,
+      "dT1m": 0.447,
+      "dT2m": 0.065,
+      "dTE": 0.000001,
+      "dTR": 0.000001,
+      "dcw_csf": 5.389,
+      "dcw_grey": 5.77,
+      "dcw_white": 5.56,
+      "df_csf": 0.05,
+      "df_grey": 0.05,
+      "df_white": 0.05,
+      "dT1_csf": 0.545,
+      "dT1_grey": 0.192,
+      "dT1_white": 0.169,
+      "dT2_csf": 0.217,
+      "dT2_grey": 0.0087,
+      "dT2_white": 0.004
+    },
+    "lower_bound": {
+      "dSw": 0.01,
+      "dT1m": 0.03,
+      "dT2m": 0.011,
+      "dTE": 0.000000001,
+      "dTR": 0.000000001,
+      "dcw_csf": 0.54,
+      "dcw_grey": 0.83,
+      "dcw_white": 0.83,
+      "df_csf": 0.02,
+      "df_grey": 0.02,
+      "df_white": 0.02,
+      "dT1_csf": 0.417,
+      "dT1_grey": 0.033,
+      "dT1_white": 0.038,
+      "dT2_csf": 0.07,
+      "dT2_grey": 0.002,
+      "dT2_white": 0.002
+    }
+  },
+  "covariances": {
+    "upper_bound": {},
+    "lower_bound": {}
+  }
+}

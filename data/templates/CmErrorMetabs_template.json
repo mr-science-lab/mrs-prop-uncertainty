@@ -1,0 +1,62 @@
+{
+  "constants": {
+    "Sw": 0,
+    "TE": 0,
+    "TR": 0,
+    "cw_csf": 0,
+    "cw_grey": 0,
+    "cw_white": 0,
+    "f_csf": 0,
+    "f_grey": 0,
+    "f_white": 0,
+    "T1_csf": 0,
+    "T1_grey": 0,
+    "T1_white": 0,
+    "T2_csf": 0,
+    "T2_grey": 0,
+    "T2_white": 0
+  },
+  "metabolites": {
+    "gaba": {
+      "Am": 0,
+      "T1m": 0,
+      "T2m": 0
+    }
+  },
+  "errors": {
+    "upper_bound": {
+      "params": {
+        "dSw": 0,
+        "dTE": 0.000000001,
+        "dTR": 0.000000001,
+        "dcw_csf": 0,
+        "dcw_grey": 0,
+        "dcw_white": 0,
+        "df_csf": 0,
+        "df_grey": 0,
+        "df_white": 0,
+        "dT1_csf": 0,
+        "dT1_grey": 0,
+        "dT1_white": 0,
+        "dT2_csf": 0,
+        "dT2_grey": 0,
+        "dT2_white": 0
+      },
+      "metabolites": {
+        "gaba": {
+          "dAm": 0,
+          "dT1m": 0,
+          "dT2m": 0
+        }
+      }
+    }
+  },
+  "covariances": {
+    "upper_bound": {
+      "f_grey-f_white": 0,
+      "f_csf_f_grey":   0,
+      "f_csf_f_white":  0
+    }
+  },
+  "description": "standard template for running uncertainty propagation on metabolite concentrations"
+}

@@ -1,0 +1,2 @@
+# exclude temp files from MacOSX
+.DS_Store

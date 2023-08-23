@@ -1,0 +1,127 @@
+{
+    "paths": {
+        "res_dir": "./results/",
+        "ms_dir":  "./data/ms_config/",
+        "mm_dir":  "./data/mm_config/",
+        "tmp_dir": "./data/templates/"
+    },
+    "CmErrorByParamPlots": {
+        "n":     10000,
+        "notes": "analytical uncertainty propagation by parameter",
+        "parameters": [ 
+            "Sw","T1m","T2m",
+            "f_grey","f_white","TE","TR",
+            "T1_csf", "T1_grey", "T1_white",
+            "T2_csf", "T2_grey", "T2_white",
+            "cw_csf", "cw_grey", "cw_white"
+        ],
+        "units": {
+            "Sw":       "A.U.",
+            "T1m":      "s",
+            "T2m":      "s",
+            "TE":       "s",
+            "TR":       "s",
+            "f_grey":   "",
+            "f_white":  "",
+            "T1_csf":   "s",
+            "T2_csf":   "s",
+            "T1_grey":  "s",
+            "T2_grey":  "s",
+            "T1_white": "s",
+            "T2_white": "s",
+            "cw_csf":   "M",
+            "cw_grey":  "M",
+            "cw_white": "M"
+        }
+    },
+    "CmErrorByMetabPlots": {
+        "n":           3000,
+        "notes":       "calculate the propagated error by metabolite",
+        "metabolites": ["cho","cr","naa","gaba","gln","glu"],
+        "meta_str":    ["Cho","Cr","NAA","GABA","Gln","Glu"],
+        "baseline":    ["Am"],
+        "parameters":  [
+            "Am", "T1m", "T2m",
+            "Sw", "TE",  "TR",
+            "f_grey", "f_white",
+            "cw_csf", "cw_grey", "cw_white",
+            "T1_csf", "T1_grey", "T1_white",
+            "T2_csf", "T2_grey", "T2_white"
+        ]
+    },
+    "CmErrorMonteCarloByParam": {
+        "n": 1000000,
+        "params": [
+            "Sw", "T1m", "T2m",
+            "TE", "TR",
+            "f_grey", "f_white", "f_csf",
+            "T1_csf", "T1_grey", "T1_white",
+            "T2_csf", "T2_grey", "T2_white",
+            "cw_csf", "cw_grey", "cw_white"
+        ]
+    },
+    "CmErrorMonteCarloByMetab": {
+        "n": 1000000,
+        "nbins": 5000,
+        "metabolites": ["cho","cr","naa","gaba","gln","glu"],
+        "colors": ["#0076BA","#76D6FF","#EE220C","#1DB100","#FF42A1","#FEAE00"],
+        "parameters": [
+            "Am", "T1m", "T2m",
+            "Sw", "TE",  "TR",
+            "f_grey", "f_white",
+            "cw_csf", "cw_grey", "cw_white",
+            "T1_csf", "T1_grey", "T1_white",
+            "T2_csf", "T2_grey", "T2_white"
+        ]
+    },
+    "CmErrorParamInfluence": {
+        "n": 1000
+    },
+    "CmErrorCaseStudyMS": {
+        "n": 1000000,
+        "nbins": 1000,
+        "filename": "01_highFWHM_M_HC.json"
+    },
+    "CmErrorCaseStudyMM": {
+        "n": 1000000,
+        "nbins": 1000,
+        "filename": "MM_02_A.json"
+    },
+    "CmErrorFiniteDifference": {
+        "n": 75,
+        "parameters": [
+            "Sw", "T1m", "T2m",
+            "f_grey", "f_white",
+            "T1_csf", "T1_grey", "T1_white",
+            "T2_csf", "T2_grey", "T2_white",
+            "cw_csf", "cw_grey", "cw_white",
+            "TE", "TR"
+        ],
+        "partials": [
+            "partial_Sw",    "partial_T1m",    "partial_T2m",
+            "partial_fgrey", "partial_fwhite",
+            "partial_T1csf", "partial_T1grey", "partial_T1white",
+            "partial_T2csf", "partial_T2grey", "partial_T2white",
+            "partial_cwcsf", "partial_cwgrey", "partial_cwwhite",
+            "partial_TE",    "partial_TR"
+        ]
+    },
+    "CmErrorMonteCarloConvergence": {
+        "metabolite": "glu",
+        "meta_str": "Glu"
+    },
+    "CmErrorSensitivityPlots": {
+        "n": 500,
+        "ns": 41,
+        "metabolites": ["cho","cr","naa","gaba","gln","glu"],
+        "meta_str": ["Cho","Cr","NAA","GABA","Gln","Glu"],
+        "parameters": [
+            "Am", "T1m", "T2m",
+            "Sw", "TE", "TR",
+            "f_grey", "f_white",
+            "cw_csf", "cw_grey", "cw_white",
+            "T1_csf", "T1_grey", "T1_white",
+            "T2_csf", "T2_grey", "T2_white"
+        ]
+    }
+}
