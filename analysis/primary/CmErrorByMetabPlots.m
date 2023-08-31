@@ -12,7 +12,7 @@
 %
 % Output:  @file - PNG with filename: error-by-metabolite-[metabolite].png
 %           that contains a plot of coefficient of variation (CV) across
-%           reference error dAm (CRLB), as a shaded region bounded by the CV
+%           reference error dSm (CRLB), as a shaded region bounded by the CV
 %           derived from the highest and lowest reported set of parameter
 %           uncertainties, as specified in CmErrorMetabs.json
 %          @file - .MAT file containing metadata from the analysis,
@@ -71,12 +71,12 @@ function CmErrorByMetabPlots(config)
     params_upper.covariances = ds.covariances.upper_bound;
     params_lower.covariances = ds.covariances.lower_bound;
 
-    % sweep across dAm values
+    % sweep across dSm values
     for i = 1:length(meta)
-        upper_dAm_temp = params_upper.constants.metabolites.(meta{i}).Am;
-        lower_dAm_temp = params_lower.constants.metabolites.(meta{i}).Am;
-        params_upper.errors.metabolites.(meta{i}).dAm = linspace(0,upper_dAm_temp,n);
-        params_lower.errors.metabolites.(meta{i}).dAm = linspace(0,lower_dAm_temp,n);
+        upper_dSm_temp = params_upper.constants.metabolites.(meta{i}).Sm;
+        lower_dSm_temp = params_lower.constants.metabolites.(meta{i}).Sm;
+        params_upper.errors.metabolites.(meta{i}).dSm = linspace(0,upper_dSm_temp,n);
+        params_lower.errors.metabolites.(meta{i}).dSm = linspace(0,lower_dSm_temp,n);
     end
 
     % perform error propagation analysis
@@ -95,11 +95,11 @@ function CmErrorByMetabPlots(config)
         % select metabolite
         field = meta{i};
 
-        % relative error for each reference (dAm/Am*100)
-        error_range_upper = params_upper.errors.metabolites.(field).dAm;
-        error_range_lower = params_lower.errors.metabolites.(field).dAm;
-        dref_upper = error_range_upper/params_upper.constants.metabolites.(field).Am*100;
-        dref_lower = error_range_lower/params_lower.constants.metabolites.(field).Am*100;
+        % relative error for each reference (dSm/Sm*100)
+        error_range_upper = params_upper.errors.metabolites.(field).dSm;
+        error_range_lower = params_lower.errors.metabolites.(field).dSm;
+        dref_upper = error_range_upper/params_upper.constants.metabolites.(field).Sm*100;
+        dref_lower = error_range_lower/params_lower.constants.metabolites.(field).Sm*100;
         dCmPerc_upper = dCm_upper.(field)/Cm_upper.(field) * 100; 
         dCmPerc_lower = dCm_lower.(field)/Cm_lower.(field) * 100; 
 
@@ -137,7 +137,7 @@ function CmErrorByMetabPlots(config)
               'LineWidth',2 );
 
         % annotate with vertical line @ ref CRLB
-        ref_crlb = ds.errors.upper_bound.metabolites.(field).dAm / ds.metabolites.(field).Am;
+        ref_crlb = ds.errors.upper_bound.metabolites.(field).dSm / ds.metabolites.(field).Sm;
         xl = xline(ref_crlb*100,'--');
         xl.FontSize  = 18; 
         xl.LineWidth = 2;
@@ -149,13 +149,11 @@ function CmErrorByMetabPlots(config)
         lterm = linspace(0,100,n);
         plot( lterm,lterm,      ...
               'LineStyle','--', ...
-              'color','black' );
+              'color','black',  ...
+              'LineWidth', 2 );
 
         % annotate with error range
         dim = [.56 .21 .34 .17];
-        if strcmp(field,'gaba')
-            dim(1) = .61;
-        end
         t1low  = strrep(compose("%.3f",params_lower.errors.metabolites.(field).dT1m),'0.','.');
         t1high = strrep(compose("%.3f",params_upper.errors.metabolites.(field).dT1m),'0.','.');
         t2low  = strrep(compose("%.3f",params_lower.errors.metabolites.(field).dT2m),'0.','.');
@@ -174,6 +172,7 @@ function CmErrorByMetabPlots(config)
         a.BackgroundColor = '#F5F3F6';
 
         % save image
-        saveas(fig,strcat(config.paths.res_dir,'error-by-metabolite-',field,'.png'));
+        exportgraphics(fig,strcat(config.paths.res_dir,'error-by-metabolite-',field,'.png'),'Resolution',2000);
+        saveas(fig,strcat(config.paths.res_dir,'error-by-metabolite-',field,'.fig'),'fig');
     end
 end

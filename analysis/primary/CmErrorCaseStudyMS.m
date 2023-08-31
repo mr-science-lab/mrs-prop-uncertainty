@@ -35,13 +35,13 @@ function CmErrorCaseStudyMS(config)
 
     % include all parameters in propagated uncertainty estimate
     all_refs = { ...
-        { 'Am' }, ...
-        { 'Am', 'S_tCr' }, ...
-        { 'Am', 'S_tCr', 'T1_tCr' }, ...
-        { 'Am', 'S_tCr', 'T1_tCr', 'T2_tCr' }, ...
-        { 'Am', 'S_tCr', 'T1_tCr', 'T2_tCr', 'T1m' }, ...
-        { 'Am', 'S_tCr', 'T1_tCr', 'T2_tCr', 'T1m', 'T2m' }, ...
-        { 'Am', 'S_tCr', 'T1_tCr', 'T2_tCr', 'T1m', 'T2m', 'TE', 'TR' } ...
+        { 'Sm' }, ...
+        { 'Sm', 'S_tCr' }, ...
+        { 'Sm', 'S_tCr', 'T1_tCr' }, ...
+        { 'Sm', 'S_tCr', 'T1_tCr', 'T2_tCr' }, ...
+        { 'Sm', 'S_tCr', 'T1_tCr', 'T2_tCr', 'T1m' }, ...
+        { 'Sm', 'S_tCr', 'T1_tCr', 'T2_tCr', 'T1m', 'T2m' }, ...
+        { 'Sm', 'S_tCr', 'T1_tCr', 'T2_tCr', 'T1m', 'T2m', 'TE', 'TR' } ...
     };
 
     % initialize figure
@@ -58,21 +58,22 @@ function CmErrorCaseStudyMS(config)
 
         % load quantification parameters
         quant_params = {};
-        quant_params.Am      = ds.constants.metabolites.tNAA.Am;
+        quant_params.Sm      = ds.constants.metabolites.tNAA.Sm;
         quant_params.T1m     = ds.constants.metabolites.tNAA.T1;
         quant_params.T2m     = ds.constants.metabolites.tNAA.T2;
-        quant_params.S_tCr   = ds.constants.metabolites.tCr.Am;
+        quant_params.S_tCr   = ds.constants.metabolites.tCr.Sm;
         quant_params.T1_tCr  = ds.constants.metabolites.tCr.T1;  % use T1 of Cr for tCr
         quant_params.T2_tCr  = ds.constants.metabolites.tCr.T2;  % use T2 of Cr for tCr
         quant_params.TE      = ds.constants.acquisition.TE;
         quant_params.TR      = ds.constants.acquisition.TR;
+        quant_params.TI      = ds.constants.acquisition.TI;
         quant_params.C_tCr   = ds.ref_concentration;             % 10 mM internal reference
 
         % set quantification uncertainties
-        quant_uncert.dAm      = ds.uncertainties.metabolites.tNAA.dAm;
+        quant_uncert.dSm      = ds.uncertainties.metabolites.tNAA.dSm;
         quant_uncert.dT1m     = ds.uncertainties.metabolites.tNAA.dT1;
         quant_uncert.dT2m     = ds.uncertainties.metabolites.tNAA.dT2;
-        quant_uncert.dS_tCr   = ds.uncertainties.metabolites.tCr.dAm;
+        quant_uncert.dS_tCr   = ds.uncertainties.metabolites.tCr.dSm;
         quant_uncert.dT1_tCr  = ds.uncertainties.metabolites.tCr.dT1;
         quant_uncert.dT2_tCr  = ds.uncertainties.metabolites.tCr.dT2;
         quant_uncert.dTE      = ds.uncertainties.acquisition.dTE;
@@ -108,7 +109,7 @@ function CmErrorCaseStudyMS(config)
         end
 
         % simulate absolute quantification (in mM, since tCr is in mM)
-        Cm = CmUtils.absolute_quantification_tCr(sim_params);
+        Cm = CmUtils.absolute_quantification_tCr_IR(sim_params);
         if (refset_index == 1)
             Cm_crlb = Cm;
         end
@@ -131,9 +132,13 @@ function CmErrorCaseStudyMS(config)
         if refset_index == length(all_refs)
             lw = 4; 
         end
-        plot(x,y,                          ...
-             'Color',colors{refset_index}, ...
-             'LineWidth',1.5);
+
+        if refset_index ~= 3 && ...
+           refset_index ~= 6
+            plot(x,y,                          ...
+                 'Color',colors{refset_index}, ...
+                 'LineWidth',1.5);
+        end
         hold on; 
         grid on;
 
@@ -165,9 +170,9 @@ function CmErrorCaseStudyMS(config)
 
           % set axis limit based on file
           ylim([0 1]);        % y-axis limits
-          xlim([9.941 10.7]); % x-axis limits
-                              % dataset: 01_highFWHM_M_HC  [9.941 10.7]
-                              % dataset: 02_lowFWHM_F_RRMS [13.26 14.1]
+          xlim([9.71 10.1]);  % x-axis limits
+                              % dataset: 01_highFWHM_M_HC  [9.71 10.1]
+                              % dataset: 02_lowFWHM_F_RRMS [12.96 13.4]
         end
 
         % calculate CV_adjusted
@@ -181,8 +186,8 @@ function CmErrorCaseStudyMS(config)
     end
 
     % save the figure as PNG
-    saveas(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
-        config.CmErrorCaseStudyMS.filename,'_tNAA_param.png'));
+    exportgraphics(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
+        config.CmErrorCaseStudyMS.filename,'_tNAA_param.png'),'Resolution',2000);
     saveas(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
         config.CmErrorCaseStudyMS.filename,'_tNAA_param.fig'),'fig');
 
@@ -192,7 +197,7 @@ function CmErrorCaseStudyMS(config)
     fig.Position = [100,100,500,400]; % position, dimensions
     set(fig,'Color',[1 1 1]);         % set white figure background
 
-    % distribution with CRLB of Am only
+    % distribution with CRLB of Sm only
     [counts, edges] = histcounts(Cm_crlb,nbins);
     counts = counts / max(y_orig_crlb);
     bar( edges(1:end-1),counts, ...
@@ -235,8 +240,8 @@ function CmErrorCaseStudyMS(config)
     plot(x_lognormal, y_lognormal, '--', 'Color', 'k', 'Linewidth', 1); % (lognormal)
 
     % save the figure as PNG
-    saveas(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
-        config.CmErrorCaseStudyMS.filename,'_tNAA_full.png'));
+    exportgraphics(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
+        config.CmErrorCaseStudyMS.filename,'_tNAA_full.png'),'Resolution',2000);
     saveas(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
         config.CmErrorCaseStudyMS.filename,'_tNAA_full.fig'),'fig');
 
@@ -246,13 +251,13 @@ function CmErrorCaseStudyMS(config)
 
     % include all parameters in propagated uncertainty estimate
     all_refs = { ...
-        { 'Am' }, ...
-        { 'Am', 'S_tCr' }, ...
-        { 'Am', 'S_tCr', 'T1_tCr' }, ...
-        { 'Am', 'S_tCr', 'T1_tCr', 'T2_tCr' }, ...
-        { 'Am', 'S_tCr', 'T1_tCr', 'T2_tCr', 'T1m' }, ...
-        { 'Am', 'S_tCr', 'T1_tCr', 'T2_tCr', 'T1m', 'T2m' }, ...
-        { 'Am', 'S_tCr', 'T1_tCr', 'T2_tCr', 'T1m', 'T2m', 'TE', 'TR' } ...
+        { 'Sm' }, ...
+        { 'Sm', 'S_tCr' }, ...
+        { 'Sm', 'S_tCr', 'T1_tCr' }, ...
+        { 'Sm', 'S_tCr', 'T1_tCr', 'T2_tCr' }, ...
+        { 'Sm', 'S_tCr', 'T1_tCr', 'T2_tCr', 'T1m' }, ...
+        { 'Sm', 'S_tCr', 'T1_tCr', 'T2_tCr', 'T1m', 'T2m' }, ...
+        { 'Sm', 'S_tCr', 'T1_tCr', 'T2_tCr', 'T1m', 'T2m', 'TE', 'TR' } ...
     };
 
     % set colors, figure parameters
@@ -264,23 +269,27 @@ function CmErrorCaseStudyMS(config)
     % simulate each subset of parameters
     for refset_index = 1:length(all_refs)
 
+        % display current parameter of interest
+        disp(strcat('Parameter of interest: ',all_refs{refset_index}{end}));
+
         % load quantification parameters
         quant_params = {};
-        quant_params.Am      = ds.constants.metabolites.Glu.Am;
+        quant_params.Sm      = ds.constants.metabolites.Glu.Sm;
         quant_params.T1m     = ds.constants.metabolites.Glu.T1;
         quant_params.T2m     = ds.constants.metabolites.Glu.T2;
-        quant_params.S_tCr   = ds.constants.metabolites.tCr.Am;
+        quant_params.S_tCr   = ds.constants.metabolites.tCr.Sm;
         quant_params.T1_tCr  = ds.constants.metabolites.tCr.T1;  % use T1 of Cr for tCr
         quant_params.T2_tCr  = ds.constants.metabolites.tCr.T2;  % use T2 of Cr for tCr
         quant_params.TE      = ds.constants.acquisition.TE;
         quant_params.TR      = ds.constants.acquisition.TR;
+        quant_params.TI      = ds.constants.acquisition.TI;
         quant_params.C_tCr   = ds.ref_concentration;             % 10 mM internal reference
 
         % set quantification uncertainties
-        quant_uncert.dAm      = ds.uncertainties.metabolites.Glu.dAm;
+        quant_uncert.dSm      = ds.uncertainties.metabolites.Glu.dSm;
         quant_uncert.dT1m     = ds.uncertainties.metabolites.Glu.dT1;
         quant_uncert.dT2m     = ds.uncertainties.metabolites.Glu.dT2;
-        quant_uncert.dS_tCr   = ds.uncertainties.metabolites.tCr.dAm;
+        quant_uncert.dS_tCr   = ds.uncertainties.metabolites.tCr.dSm;
         quant_uncert.dT1_tCr  = ds.uncertainties.metabolites.tCr.dT1;
         quant_uncert.dT2_tCr  = ds.uncertainties.metabolites.tCr.dT2;
         quant_uncert.dTE      = ds.uncertainties.acquisition.dTE;
@@ -315,7 +324,7 @@ function CmErrorCaseStudyMS(config)
         end
 
         % simulate absolute quantification (in mM, since tCr is in mM)
-        Cm = CmUtils.absolute_quantification_tCr(sim_params);
+        Cm = CmUtils.absolute_quantification_tCr_IR(sim_params);
         if (refset_index == 1)
             Cm_crlb = Cm;
         end
@@ -336,7 +345,11 @@ function CmErrorCaseStudyMS(config)
         if refset_index == length(all_refs)
             lw = 2; 
         end
-        plot(x,y,'Color',colors{refset_index},'LineWidth',lw);
+        if refset_index ~= 3 && ...
+           refset_index ~= 5 && ...
+           refset_index ~= 6
+            plot(x,y,'Color',colors{refset_index},'LineWidth',lw);
+        end
         hold on; 
         grid on;
 
@@ -364,9 +377,9 @@ function CmErrorCaseStudyMS(config)
             ylim([0 1]);
 
             % set axis limit based on file
-            xlim([10.9 11.8]);  % x-axis limits,
-                                % dataset: 01_highFWHM_M_HC  [10.9 11.8]
-                                % dataset: 02_lowFWHM_F_RRMS [14.0 15]
+            xlim([11 11.8]);  % x-axis limits,
+                              % dataset: 01_highFWHM_M_HC  [11 11.8]
+                              % dataset: 02_lowFWHM_F_RRMS [14.11 14.6]
         end
 
         % calculate CV_adjusted
@@ -380,8 +393,8 @@ function CmErrorCaseStudyMS(config)
     end
     
     % save the figure as PNG
-    saveas(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
-        config.CmErrorCaseStudyMS.filename,'_glu_param.png'));
+    exportgraphics(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
+        config.CmErrorCaseStudyMS.filename,'_glu_param.png'),'Resolution',2000);
     saveas(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
         config.CmErrorCaseStudyMS.filename,'_glu_param.fig'),'fig');
 
@@ -390,7 +403,7 @@ function CmErrorCaseStudyMS(config)
     fig.Position = [100,100,500,400];  % position, dimensions
     set(fig,'Color',[1 1 1]);          % set white figure background
 
-    % distribution with CRLB of Am only
+    % distribution with CRLB of Sm only
     [counts, edges] = histcounts(Cm_crlb,nbins);
     counts = counts / max(y_orig_crlb);
     bar( edges(1:end-1),counts, ...
@@ -434,8 +447,8 @@ function CmErrorCaseStudyMS(config)
     plot(x_lognormal, y_lognormal, '--', 'Color', 'k', 'Linewidth', 1); % (lognormal)
 
     % save the figure as PNG
-    saveas(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
-        config.CmErrorCaseStudyMS.filename,'_glu_full.png'));
+    exportgraphics(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
+        config.CmErrorCaseStudyMS.filename,'_glu_full.png'),'Resolution',2000);
     saveas(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
         config.CmErrorCaseStudyMS.filename,'_glu_full.fig'),'fig');
 end

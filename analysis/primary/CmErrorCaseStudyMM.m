@@ -35,7 +35,7 @@ function CmErrorCaseStudyMM(config)
     % include all parameters in propagated uncertainty estimate
     % exclude f_csf since dependent on f_grey, f_white
     all_refs = {                             ...
-        'Amm', 'Sw', 'T2mm','TE', 'TR',      ...
+        'Smm', 'Sw', 'T2mm','TE', 'TR',      ...
         'T1w_grey',  'T1w_white', 'T1w_csf', ...
         'T2w_grey',  'T2w_white', 'T2w_csf', ...
         'cw_grey',   'cw_white',  'cw_csf',  ...
@@ -56,7 +56,7 @@ function CmErrorCaseStudyMM(config)
 
         % load quantification parameters
         quant_params = {};
-        quant_params.Amm       = ds.constants.macromolecules.mm2_04.Amm;
+        quant_params.Smm       = ds.constants.macromolecules.mm2_04.Smm;
         quant_params.T2mm      = ds.constants.macromolecules.mm2_04.T2mm;
         quant_params.Sw        = ds.constants.water_ref.Sw;
         quant_params.T1w_grey  = ds.constants.water_ref.T1_grey;
@@ -74,7 +74,7 @@ function CmErrorCaseStudyMM(config)
         quant_params.TE        = ds.constants.acquisition.TE;
 
         % set quantification uncertaintites
-        quant_uncert.dAmm       = ds.uncertainties.macromolecules.mm2_04.dAmm;
+        quant_uncert.dSmm       = ds.uncertainties.macromolecules.mm2_04.dSmm;
         quant_uncert.dT2mm      = ds.uncertainties.macromolecules.mm2_04.dT2mm;
         quant_uncert.dSw        = ds.uncertainties.water_ref.dSw;
         quant_uncert.dT1w_grey  = ds.uncertainties.water_ref.dT1_grey;
@@ -176,14 +176,14 @@ function CmErrorCaseStudyMM(config)
         end
         switch config.CmErrorCaseStudyMM.filename
             case 'MM_01_B.json'
-                if ismember(curr_ref,{'Amm','T2mm','f_grey','f_white'})
+                if ismember(curr_ref,{'Smm','T2mm','f_grey','f_white'})
                     plot( x,y,                   ...
                           'Color',current_color, ...
                           'LineWidth',1.5); 
                     hold on; 
                 end
             case 'MM_02_A.json'
-                if ismember(curr_ref,{'Amm','T2mm','f_grey','f_white'})
+                if ismember(curr_ref,{'Smm','T2mm','f_grey','f_white'})
                     plot( x,y,                   ...
                           'Color',current_color, ...
                           'LineWidth',1.5); 
@@ -240,8 +240,8 @@ function CmErrorCaseStudyMM(config)
     end
 
     % save the figure as PNG
-    saveas(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
-        config.CmErrorCaseStudyMM.filename,'_M2.04_param.png'));
+    exportgraphics(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
+        config.CmErrorCaseStudyMM.filename,'_M2.04_param.png'),'Resolution',2000);
     saveas(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
         config.CmErrorCaseStudyMM.filename,'_M2.04_param.fig'),'fig');
 
@@ -251,7 +251,7 @@ function CmErrorCaseStudyMM(config)
     fig.Position = [100,100,500,400]; % position, dimensions
     set(fig,'Color',[1 1 1]);         % set white figure background
 
-    % distribution with CRLB of Am only
+    % distribution with CRLB of Sm only
     [counts, edges] = histcounts(Cm_crlb,nbins);
     counts = counts / max(y_orig_crlb);
     bar( edges(1:end-1),counts, ...
@@ -294,8 +294,8 @@ function CmErrorCaseStudyMM(config)
     plot(x_lognormal, y_lognormal, '--', 'Color', 'k', 'Linewidth', 1); % (lognormal)
 
     % save the figure as PNG
-    saveas(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
-        config.CmErrorCaseStudyMM.filename,'_M2.04_full.png'));
+    exportgraphics(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
+        config.CmErrorCaseStudyMM.filename,'_M2.04_full.png'),'Resolution',2000);
     saveas(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
         config.CmErrorCaseStudyMM.filename,'_M2.04_full.fig'),'fig');
 
@@ -305,7 +305,7 @@ function CmErrorCaseStudyMM(config)
     % include all parameters in propagated uncertainty estimate
     % exclude f_csf since dependent on f_grey, f_white
     all_refs = {                            ...
-        'Amm', 'Sw', 'T2mm', 'TE', 'TR',    ...
+        'Smm', 'Sw', 'T2mm', 'TE', 'TR',    ...
         'T1w_grey', 'T1w_white', 'T1w_csf', ...
         'T2w_grey', 'T2w_white', 'T2w_csf', ...
         'cw_grey',  'cw_white',  'cw_csf',  ...
@@ -325,7 +325,7 @@ function CmErrorCaseStudyMM(config)
 
         % load quantification parameters
         quant_params = {};
-        quant_params.Amm       = ds.constants.macromolecules.mm0_92.Amm;
+        quant_params.Smm       = ds.constants.macromolecules.mm0_92.Smm;
         quant_params.T2mm      = ds.constants.macromolecules.mm0_92.T2mm;
         quant_params.Sw        = ds.constants.water_ref.Sw;
         quant_params.T1w_grey  = ds.constants.water_ref.T1_grey;
@@ -343,7 +343,7 @@ function CmErrorCaseStudyMM(config)
         quant_params.TE        = ds.constants.acquisition.TE;
 
         % set quantification uncertaintites
-        quant_uncert.dAmm       = ds.uncertainties.macromolecules.mm0_92.dAmm;
+        quant_uncert.dSmm       = ds.uncertainties.macromolecules.mm0_92.dSmm;
         quant_uncert.dT2mm      = ds.uncertainties.macromolecules.mm0_92.dT2mm;
         quant_uncert.dSw        = ds.uncertainties.water_ref.dSw;
         quant_uncert.dT1w_grey  = ds.uncertainties.water_ref.dT1_grey;
@@ -443,7 +443,7 @@ function CmErrorCaseStudyMM(config)
         else
             current_color = '#5E5E5E';
         end
-        if ismember(curr_ref,{'Amm','T2mm','cw_grey','f_grey','f_white'})
+        if ismember(curr_ref,{'Smm','T2mm','cw_grey','f_grey','f_white'})
             plot(x,y,'Color',current_color,'LineWidth',1.5); hold on; 
         end
         grid on;
@@ -492,8 +492,8 @@ function CmErrorCaseStudyMM(config)
     end
 
     % save the figure as PNG
-    saveas(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
-        config.CmErrorCaseStudyMM.filename,'_M0.92_param.png'));
+    exportgraphics(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
+        config.CmErrorCaseStudyMM.filename,'_M0.92_param.png'),'Resolution',2000);
     saveas(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
         config.CmErrorCaseStudyMM.filename,'_M0.92_param.fig'),'fig');
 
@@ -502,7 +502,7 @@ function CmErrorCaseStudyMM(config)
     fig = figure; fig.Position = [100,100,500,400];
     set(fig,'Color',[1 1 1]); % set white figure background
 
-    % distribution with CRLB of Am only
+    % distribution with CRLB of Sm only
     [counts, edges] = histcounts(Cm_crlb,nbins);
     counts = counts / max(y_orig_crlb);
     bar(edges(1:end-1),counts,'FaceColor','#0076BA','FaceAlpha',0.9,'EdgeAlpha',0);
@@ -539,8 +539,8 @@ function CmErrorCaseStudyMM(config)
     plot(x_lognormal, y_lognormal, '--', 'Color', 'k', 'Linewidth', 1); % (lognormal)
 
     % save the figure as PNG
-    saveas(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
-        config.CmErrorCaseStudyMM.filename,'_M0.92_full.png'));
+    exportgraphics(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
+        config.CmErrorCaseStudyMM.filename,'_M0.92_full.png'),'Resolution',2000);
     saveas(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
         config.CmErrorCaseStudyMM.filename,'_M0.92_full.fig'),'fig');
 
@@ -551,7 +551,7 @@ function CmErrorCaseStudyMM(config)
     % include all parameters in propagated uncertainty estimate
     % exclude f_csf since dependent on f_grey, f_white
     all_refs = { 
-        'Am', 'Sw', 'T1m', 'T2m', 'TE', 'TR', ...
+        'Sm', 'Sw', 'T1m', 'T2m', 'TE', 'TR', ...
         'T1w_grey', 'T1w_white', 'T1w_csf',   ...
         'T2w_grey', 'T2w_white', 'T2w_csf',   ...
         'cw_grey',  'cw_white',  'cw_csf',    ...
@@ -571,7 +571,7 @@ function CmErrorCaseStudyMM(config)
 
         % load quantification parameters
         quant_params = {};
-        quant_params.Am        = ds.constants.metabolites.tNAA.Am;
+        quant_params.Sm        = ds.constants.metabolites.tNAA.Sm;
         quant_params.T1m       = ds.constants.metabolites.tNAA.T1m;
         quant_params.T2m       = ds.constants.metabolites.tNAA.T2m;
         quant_params.Sw        = ds.constants.water_ref.Sw;
@@ -590,7 +590,7 @@ function CmErrorCaseStudyMM(config)
         quant_params.TE        = ds.constants.acquisition.TE;
 
         % set quantification uncertaintites
-        quant_uncert.dAm        = ds.uncertainties.metabolites.tNAA.dAm;
+        quant_uncert.dSm        = ds.uncertainties.metabolites.tNAA.dSm;
         quant_uncert.dT1m       = ds.uncertainties.metabolites.tNAA.dT1m;
         quant_uncert.dT2m       = ds.uncertainties.metabolites.tNAA.dT2m;
         quant_uncert.dSw        = ds.uncertainties.water_ref.dSw;
@@ -690,7 +690,7 @@ function CmErrorCaseStudyMM(config)
         else
             current_color = '#5E5E5E';
         end
-        if ismember(curr_ref,{'Am','T1m','T2m','cw_grey','f_grey','f_white'})
+        if ismember(curr_ref,{'Sm','T1m','T2m','cw_grey','f_grey','f_white'})
             plot(x,y,'Color',current_color,'LineWidth',1.5);
             hold on; 
         end
@@ -740,8 +740,8 @@ function CmErrorCaseStudyMM(config)
     end
 
     % save the figure as PNG
-    saveas(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
-        config.CmErrorCaseStudyMM.filename,'_tNAA_param.png'));
+    exportgraphics(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
+        config.CmErrorCaseStudyMM.filename,'_tNAA_param.png'),'Resolution',2000);
     saveas(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
         config.CmErrorCaseStudyMM.filename,'_tNAA_param.fig'),'fig');
 
@@ -750,7 +750,7 @@ function CmErrorCaseStudyMM(config)
     fig.Position = [100,100,500,400];  % position, dimensions
     set(fig,'Color',[1 1 1]);          % set white figure background
 
-    % distribution with CRLB of Am only
+    % distribution with CRLB of Sm only
     [counts, edges] = histcounts(Cm_crlb,nbins);
     counts = counts / max(y_orig_crlb);
     bar(edges(1:end-1),counts,'FaceColor','#0076BA','FaceAlpha',0.9,'EdgeAlpha',0);
@@ -787,8 +787,8 @@ function CmErrorCaseStudyMM(config)
     plot(x_lognormal, y_lognormal, '--', 'Color', 'k', 'Linewidth', 1); % (lognormal)
 
     % save the figure as PNG
-    saveas(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
-        config.CmErrorCaseStudyMM.filename,'_tNAA_full.png'));
+    exportgraphics(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
+        config.CmErrorCaseStudyMM.filename,'_tNAA_full.png'),'Resolution',2000);
     saveas(fig,strcat(config.paths.res_dir,'mc_case_study_', ...
         config.CmErrorCaseStudyMM.filename,'_tNAA_full.fig'),'fig');
 end

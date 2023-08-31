@@ -59,10 +59,10 @@ function CmErrorByParamPlots(config)
     lower.constants = ds.constants;                                     % lower bound shared constants
     upper.errors    = ds.errors.upper_bound;                            % upper bound uncertainties
     lower.errors    = ds.errors.lower_bound;                            % lower bound uncertainties
-    upper.options.reference_var = 'Am';                                 % set linear term (reference)
-    lower.options.reference_var = 'Am';
-    upper.options.error_range   = linspace(0,upper.constants.Am, n);    % calculate over ref uncertainty
-    lower.options.error_range   = linspace(0,lower.constants.Am, n);
+    upper.options.reference_var = 'Sm';                                 % set linear term (reference)
+    lower.options.reference_var = 'Sm';
+    upper.options.error_range   = linspace(0,upper.constants.Sm, n);    % calculate over ref uncertainty
+    lower.options.error_range   = linspace(0,lower.constants.Sm, n);
     upper.covariances = ds.covariances.upper_bound;                     % upper bound covariances
     lower.covariances = ds.covariances.lower_bound;                     % lower bound covariances
 
@@ -71,17 +71,17 @@ function CmErrorByParamPlots(config)
 
         % set current parameter for analysis
         param = parameters{i};
-        upper.options.includedTerms = {'Am', param}; % linear term + variable of interest 
-        lower.options.includedTerms = {'Am', param}; 
+        upper.options.includedTerms = {'Sm', param}; % linear term + variable of interest 
+        lower.options.includedTerms = {'Sm', param}; 
 
         % calculate propagated error (dCm)
         disp(strcat('Running Uncertainty Analysis on Parameter:',param));
         [Cm_upper, dCm_upper, md_upper] = CmErrorByParameter(upper);
         [Cm_lower, dCm_lower, md_lower] = CmErrorByParameter(lower);
 
-        % relative error of each reference (dAm/Am*100), same for both
-        dref_upper = upper.options.error_range / upper.constants.Am*100;
-        dref_lower = lower.options.error_range / lower.constants.Am*100;
+        % relative error of each reference (dSm/Sm*100), same for both
+        dref_upper = upper.options.error_range / upper.constants.Sm*100;
+        dref_lower = lower.options.error_range / lower.constants.Sm*100;
 
         % normalized coefficient of variation, estimate
         dCmrel_upper = dCm_upper / Cm_upper * 100;
@@ -142,15 +142,15 @@ function CmErrorByParamPlots(config)
         end
 
         % generate linear term for reference
-        % (i.e. propagated error as a result of a single linear term, dAm)
+        % (i.e. propagated error as a result of a single linear term, dSm)
         reference.constants = ds.constants;          % use same constants as previous analysis
         reference.errors    = ds.errors.upper_bound; % placeholder; doesn't matter since terms are not included
-        reference.options.reference_var = 'Am';      % error of reference (CRLB)
-        reference.options.error_range   = linspace(0,upper.constants.Am, n);
-        reference.options.includedTerms = {'Am'};    % do not include any terms other than CRLB
+        reference.options.reference_var = 'Sm';      % error of reference (CRLB)
+        reference.options.error_range   = linspace(0,upper.constants.Sm, n);
+        reference.options.includedTerms = {'Sm'};    % do not include any terms other than CRLB
         reference.covariances = ds.covariances.upper_bound;
         [Cm_ref, dCm_ref] = CmErrorByParameter(reference);
-        dreference = reference.options.error_range / reference.constants.Am*100;
+        dreference = reference.options.error_range / reference.constants.Sm*100;
         dCmrel_reference = dCm_ref / Cm_ref * 100;
 
         % include linear term to figure as dashed line
@@ -173,10 +173,10 @@ function CmErrorByParamPlots(config)
         ax.YAxis(2).Color = 'k';
         ax.YAxis(1).Color = colors{i};
         yl = ylabel('Parameter Influence');
-        set(yl,'FontSize',20');
+        set(yl,'FontSize',20);
 
         % save image as PNG
-        saveas(fig,strcat(config.paths.res_dir,'single-ref-',param,'.png'));
+        exportgraphics(fig,strcat(config.paths.res_dir,'single-ref-',param,'.png'),'Resolution',1000);
 
         % save analysis parameters as MAT
         params.n = n; 

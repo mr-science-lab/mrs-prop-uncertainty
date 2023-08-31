@@ -39,7 +39,7 @@ classdef CmUtils
         % returns a formatted string for chart parameters, underscores & symbols
         function [param_str] = format_param_as_string(param)
             
-            param_str = strrep(param,    'Am',       'A_{m}');
+            param_str = strrep(param,    'Sm',       'S_{m}');
             param_str = strrep(param_str,'Sw',       'S_{w}');
             param_str = strrep(param_str,'T1m',      '{\it T}_{1m}');
             param_str = strrep(param_str,'T2m',      '{\it T}_{2m}');
@@ -72,9 +72,9 @@ classdef CmUtils
         end
         
         % returns the absolute concentration of generic metabolite with 
-        % LCM amplitude Am; T1 and T2 corrections are applied,
+        % LCM amplitude Sm; T1 and T2 corrections are applied,
         % quantification is performed using an internal tCr reference
-        % input params: Am, T1m, T2m, S_tCr, T1_tCr, T2_tCr, TE, TR, C_tCr
+        % input params: Sm, T1m, T2m, S_tCr, T1_tCr, T2_tCr, TE, TR, C_tCr
         function [Cm] = absolute_quantification_tCr(params)
 
             % T1 correction
@@ -84,15 +84,30 @@ classdef CmUtils
             T2_corr = exp(-params.TE./params.T2_tCr) ./ exp(-params.TE./params.T2m);
             
             % absolute concentration estimate of metabolite m
-            Cm = (params.Am ./ params.S_tCr) .* T1_corr .* T2_corr .* params.C_tCr;
+            Cm = (params.Sm ./ params.S_tCr) .* T1_corr .* T2_corr .* params.C_tCr;
+        end
+
+        % returns the absolute concentration of generic metabolite with
+        % LCM amplitude Sm, T1 and T2 correction applied,
+        % assuming inversion recovery sequence
+        function [Cm] = absolute_quantification_tCr_IR(params)
+
+            % T1 correction
+            T1_corr = (1-2*exp(-params.TI./params.T1_tCr)+exp(-params.TR./params.T1_tCr)) ./ (1-2*exp(-params.TI./params.T1m)+exp(-params.TR./params.T1m));
+
+            % T2 correction
+            T2_corr = exp(-params.TE./params.T2_tCr) ./ exp(-params.TE./params.T2m);
+
+            % absolute concentration estimate of metabolite m
+            Cm = (params.Sm ./ params.S_tCr) .* T1_corr .* T2_corr .* params.C_tCr;
         end
 
         % returns the absolute concentration of generic macromolecule with
-        % LCM amplitude Amm, using a tissue-specific water reference
+        % LCM amplitude Smm, using a tissue-specific water reference
         % T1 and T2 corrections are applied for water; 
         % T2 correction is applied for macromolecule
         % input params: 
-        %    Amm, T2mm, Sw, 
+        %    Smm, T2mm, Sw, 
         %    f_csf, f_grey, f_white,
         %    cw_grey, cw_white, cw_csf, 
         %    T1w_grey, T1w_white, T1w_csf, 
@@ -119,11 +134,11 @@ classdef CmUtils
             sum_corrections = corr_grey + corr_white + corr_csf;
             
             % absolute concentration estimate
-            Cmm = (params.Amm ./ (params.Sw .* (1-params.f_csf))) .* T2mm_correction .* sum_corrections;
+            Cmm = (params.Smm ./ (params.Sw .* (1-params.f_csf))) .* T2mm_correction .* sum_corrections;
         end
         
         % returns the absolute concentration of generic metabolic m with
-        % LCM amplitude Am, using tissue-specific water reference
+        % LCM amplitude Sm, using tissue-specific water reference
         % T1 and T2 corrections are applied for water and the metabolite
         function [Cm] = absolute_quantification_water(params)
             
@@ -148,7 +163,7 @@ classdef CmUtils
             sum_corrections = corr_grey + corr_white + corr_csf;
             
             % absolute concentration estimate
-            Cm = (params.Am ./ (params.Sw .* (1-params.f_csf))) .* T1m_correction .* T2m_correction .* sum_corrections;
+            Cm = (params.Sm ./ (params.Sw .* (1-params.f_csf))) .* T1m_correction .* T2m_correction .* sum_corrections;
         end
     end
 end

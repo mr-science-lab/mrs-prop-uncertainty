@@ -39,9 +39,9 @@
         "notes":       "calculate the propagated error by metabolite",
         "metabolites": ["cho","cr","naa","gaba","gln","glu"],
         "meta_str":    ["Cho","Cr","NAA","GABA","Gln","Glu"],
-        "baseline":    ["Am"],
+        "baseline":    ["Sm"],
         "parameters":  [
-            "Am", "T1m", "T2m",
+            "Sm", "T1m", "T2m",
             "Sw", "TE",  "TR",
             "f_grey", "f_white",
             "cw_csf", "cw_grey", "cw_white",
@@ -66,7 +66,7 @@
         "metabolites": ["cho","cr","naa","gaba","gln","glu"],
         "colors": ["#0076BA","#76D6FF","#EE220C","#1DB100","#FF42A1","#FEAE00"],
         "parameters": [
-            "Am", "T1m", "T2m",
+            "Sm", "T1m", "T2m",
             "Sw", "TE",  "TR",
             "f_grey", "f_white",
             "cw_csf", "cw_grey", "cw_white",
@@ -116,7 +116,7 @@
         "metabolites": ["cho","cr","naa","gaba","gln","glu"],
         "meta_str": ["Cho","Cr","NAA","GABA","Gln","Glu"],
         "parameters": [
-            "Am", "T1m", "T2m",
+            "Sm", "T1m", "T2m",
             "Sw", "TE", "TR",
             "f_grey", "f_white",
             "cw_csf", "cw_grey", "cw_white",

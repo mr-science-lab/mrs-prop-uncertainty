@@ -56,17 +56,17 @@ function CmErrorMonteCarloByMetab(config)
             curr_ref = refs{ref_index};
 
             % set random variable for each metabolite-specific parameter
-            if ismember(curr_ref,{'Am','T1m','T2m'})
+            if ismember(curr_ref,{'Sm','T1m','T2m'})
 
                 % case: metabolite-specific parameters
                 mu = ds.metabolites.(curr_metab).(curr_ref);
                 sigma_upper = ds.errors.upper_bound.metabolites.(curr_metab).(strcat('d',curr_ref));
                 sigma_lower = ds.errors.lower_bound.metabolites.(curr_metab).(strcat('d',curr_ref));
 
-                % hold Am constant between upper and lower
-                % use the upper bound for Am across simulations
-                if ismember(curr_ref,{'Am'})
-                    sigma_lower = ds.errors.upper_bound.metabolites.(curr_metab).('dAm');
+                % hold Sm constant between upper and lower
+                % use the upper bound for Sm across simulations
+                if ismember(curr_ref,{'Sm'})
+                    sigma_lower = ds.errors.upper_bound.metabolites.(curr_metab).('dSm');
                 end
 
                 % truncate T1m, T2m at 0, avoid negative numbers
@@ -77,7 +77,7 @@ function CmErrorMonteCarloByMetab(config)
                     t_lower  = truncate(pd_lower,1e-2,inf);
                     r_upper  = random(t_upper,1,n);
                     r_lower  = random(t_lower,1,n);
-                else % case: Am
+                else % case: Sm
                     r_upper = normrnd(mu,sigma_upper,[1 n]);
                     r_lower = normrnd(mu,sigma_lower,[1 n]);
                 end
@@ -144,7 +144,7 @@ function CmErrorMonteCarloByMetab(config)
         end
 
         % Generate distribution using only CRLB
-        curr_ref = 'Am';
+        curr_ref = 'Sm';
         mu = ds.metabolites.(curr_metab).(curr_ref);
         sigma_crlb = ds.errors.upper_bound.metabolites.(curr_metab).(strcat('d',curr_ref));
         r_crlb = normrnd(mu,sigma_crlb,[1 n]);
@@ -219,6 +219,6 @@ function CmErrorMonteCarloByMetab(config)
         a.FontSize  = 16;
 
         % save the figure as PNG
-        saveas(fig,strcat(config.paths.res_dir,'monte-carlo-',curr_metab,'.png'));
+        exportgraphics(fig,strcat(config.paths.res_dir,'monte-carlo-',curr_metab,'.png'),'Resolution',2000);
     end
 end

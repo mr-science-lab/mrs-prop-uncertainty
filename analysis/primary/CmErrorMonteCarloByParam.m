@@ -46,7 +46,7 @@ function CmErrorMonteCarloByParam(config)
     % run analysis on each quantification parameter
     for i = 1:length(all_params)
 
-        % set current parameter (e.g. Am, Sw)
+        % set current parameter (e.g. Sm, Sw)
         param = all_params{i};
         disp(strcat('Analyzing quantification parameter:',param));
 
@@ -163,6 +163,6 @@ function CmErrorMonteCarloByParam(config)
         a.FontSize = 16;
 
         % save the figure
-        saveas(fig,strcat(config.paths.res_dir,'monte-carlo-',param,'.png'));
+        exportgraphics(fig,strcat(config.paths.res_dir,'monte-carlo-',param,'.png'),'Resolution',2000);
     end
 end

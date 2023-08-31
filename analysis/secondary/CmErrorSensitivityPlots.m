@@ -80,9 +80,9 @@ function CmErrorSensitivityPlots(config)
             disp(['cov(f_white,f_grey):' num2str(f_covs(j))]);
             params_lower.covariances.f_grey_f_white = f_covs(j);
 
-            % sweep across dAm values
-            lower_dAm_temp = params_lower.constants.metabolites.(meta{meta_index}).Am;
-            params_lower.errors.metabolites.(meta{meta_index}).dAm = linspace(0,lower_dAm_temp,n);
+            % sweep across dSm values
+            lower_dSm_temp = params_lower.constants.metabolites.(meta{meta_index}).Sm;
+            params_lower.errors.metabolites.(meta{meta_index}).dSm = linspace(0,lower_dSm_temp,n);
 
             % perform error propagation analysis
             [Cm_lower, dCm_lower, md_lower] = CmErrorByMetabolite(params_lower);
@@ -90,9 +90,9 @@ function CmErrorSensitivityPlots(config)
             % select metabolite
             field = meta{meta_index};
 
-            % relative error for each reference (dAm/Am*100)
-            error_range_lower = params_lower.errors.metabolites.(field).dAm;
-            dref_lower = error_range_lower/params_lower.constants.metabolites.(field).Am*100;
+            % relative error for each reference (dSm/Sm*100)
+            error_range_lower = params_lower.errors.metabolites.(field).dSm;
+            dref_lower = error_range_lower/params_lower.constants.metabolites.(field).Sm*100;
             dCmPerc_lower = dCm_lower.(field)/Cm_lower.(field) * 100; 
 
             % initialize figure, set display parameters
@@ -145,7 +145,7 @@ function CmErrorSensitivityPlots(config)
         plot(lterm,lterm,'LineStyle','--','color','black','LineWidth',1);
 
         % save image
-        saveas(fig,strcat(config.paths.res_dir,'sensitivity-by-metabolite-',field,'.png'));
+        exportgraphics(fig,strcat(config.paths.res_dir,'sensitivity-by-metabolite-',field,'.png'),'Resolution',2000);
         saveas(fig,strcat(config.paths.res_dir,'sensitivity-by-metabolite-',field,'.fig'));
 
     end
@@ -172,6 +172,6 @@ function CmErrorSensitivityPlots(config)
     ax.FontName = 'Calibri';
     
     % save image
-    saveas(fig,strcat(config.paths.res_dir,'sensitivity-curves','.png'));
+    exportgraphics(fig,strcat(config.paths.res_dir,'sensitivity-curves','.png'),'Resolution',2000);
     saveas(fig,strcat(config.paths.res_dir,'sensitivity-curves','.fig'));
 end

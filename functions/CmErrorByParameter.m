@@ -18,11 +18,11 @@
 %               following data model: 
 %           {
 %               "options": {
-%                   "reference_var": 'Am',
+%                   "reference_var": 'Sm',
 %                   "error_range":   (0:.01:1)
 %               },
-%               "constants":   {Am: 0.0001, Sw: 1, ...},
-%               "errors":      {dAm: 0.05, dSw: 0.06, ...},
+%               "constants":   {Sm: 0.0001, Sw: 1, ...},
+%               "errors":      {dSm: 0.05, dSw: 0.06, ...},
 %               "covariances": {f_csf-f_grey: 0.001, ...}
 %               "description": "this is a test dataset"
 %           }
@@ -40,11 +40,11 @@
 %           no. 9, Sep. 2020, doi: 10.1002/nbm.4324.
 %           
 %           Covariances are in the form x-y, which is equivalent to y-x,
-%           since covar matrix is symmetric, e.g. Am-Sw == Sw-Am. System
+%           since covar matrix is symmetric, e.g. Sm-Sw == Sw-Sm. System
 %           defaults a covariance value to 0 is unspecified.
 %
 %           The following sequence & system parameters are supported: 
-%               Am    - the LCM quantification amplitude
+%               Sm    - the LCM quantification amplitude
 %               Sw    - signal water amplitude
 %               T1m   - metabolite longitudinal relaxation time (seconds)
 %               T2m   - metabolite transverse relaxation time (seconds)
@@ -83,7 +83,7 @@ function [Cm, dCm, md] = CmErrorByParameter(params)
 
     % define terms to include/exclude from error estimate
     TERMS = { ...
-        'Am','Sw','T1m','T2m','TE','TR', ...
+        'Sm','Sw','T1m','T2m','TE','TR', ...
         'f_grey', 'f_white', 'f_csf',    ...
         'cw_csf', 'cw_grey', 'cw_white', ...
         'T1_csf', 'T1_grey', 'T1_white', ...
@@ -112,7 +112,7 @@ function [Cm, dCm, md] = CmErrorByParameter(params)
     cmp_obj = CmPartials(c);
 
     % calculate total concentration estimate, Cm
-    Cm = (c.Am*exp(c.TE/c.T2m)*cmp_obj.Dm)/(c.Sw*(1-c.f_csf))*cmp_obj.f_sum;
+    Cm = (c.Sm*exp(c.TE/c.T2m)*cmp_obj.Dm)/(c.Sw*(1-c.f_csf))*cmp_obj.f_sum;
     
     % calculate partial derivatives
     partials = cmp_obj.calc_partials.partials;

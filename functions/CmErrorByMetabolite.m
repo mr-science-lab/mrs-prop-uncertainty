@@ -9,7 +9,7 @@
 %
 %           This implementation allows users to specify any of the following 
 %           absolute quantification parameters, including:
-%               Am    - the LCM quantification amplitude
+%               Sm    - the LCM quantification amplitude
 %               Sw    - signal water amplitude
 %               T1m   - metabolite longitudinal relaxation time (seconds)
 %               T2m   - metabolite transverse relaxation time (seconds)
@@ -30,13 +30,13 @@
 %           {
 %               "options": {
 %                   "metabolites":   {"naa","glu","gln", ...},
-%                   "includedTerms": {"Am", "Sw", "T1m", ...}
+%                   "includedTerms": {"Sm", "Sw", "T1m", ...}
 %               },
 %               "constants": {
 %                   "params": {"Sw":1, "TE":0.02, ...},
 %                   "metabolites": {
-%                       "naa": {"Am": 0.0001, "T1m": 1.38, "T2m": 0.295},
-%                       "glu": {"Am": 0.0001, "T1m": 1.27, "T2m": 0.122}
+%                       "naa": {"Sm": 0.0001, "T1m": 1.38, "T2m": 0.295},
+%                       "glu": {"Sm": 0.0001, "T1m": 1.27, "T2m": 0.122}
 %                       ...
 %                   },
 %               },
@@ -44,15 +44,15 @@
 %                   "upper_bound": {
 %                       "params": {"dSw":0.05, ...},
 %                       "metabolites": {
-%                           "naa": { "dAm": ##, "dT1m": ##, "dT2m": ## },
-%                           "glu": { "dAm": ##, "dT1m": ##, "dT2m": ## },
+%                           "naa": { "dSm": ##, "dT1m": ##, "dT2m": ## },
+%                           "glu": { "dSm": ##, "dT1m": ##, "dT2m": ## },
 %                       }
 %                   },
 %                   "lower_bound": {...}
 %               },
 %               "covariances": {
-%                   "upper_bound": { "Am-Sw": ##, ... },
-%                   "lower_bound": { "Am-Sw": ##, ... }
+%                   "upper_bound": { "Sm-Sw": ##, ... },
+%                   "lower_bound": { "Sm-Sw": ##, ... }
 %               }
 %           }
 % 
@@ -70,7 +70,7 @@
 %           no. 9, Sep. 2020, doi: 10.1002/nbm.4324.
 %
 %           Covariances are in the form x-y, which is equivalent to y-x,
-%           since covar matrix is symmetric, e.g. Am-Sw == Sw-Am. System
+%           since covar matrix is symmetric, e.g. Sm-Sw == Sw-Sm. System
 %           defaults a covariance value to 0 is unspecified.
 %
 % Corresponding Author:   Ronald Instrella, M.S.
@@ -111,8 +111,8 @@ function [Cm, dCm, md] = CmErrorByMetabolite(params)
         end
     end
     
-    % toggle included terms (e.g. Am, T1m, T2m)
-    TERMS = { 'Am','T1m','T2m','Sw','TE','TR', ...
+    % toggle included terms (e.g. Sm, T1m, T2m)
+    TERMS = { 'Sm','T1m','T2m','Sw','TE','TR', ...
               'f_csf','f_grey','f_white',      ...
               'cw_csf','cw_grey','cw_white',   ...
               'T1_csf', 'T1_grey', 'T1_white', ...
@@ -147,7 +147,7 @@ function [Cm, dCm, md] = CmErrorByMetabolite(params)
 
             % use CmPartials class to calculate partials
             curr_consts = c;
-            curr_consts.Am  = c_meta.(metas{i}).Am;
+            curr_consts.Sm  = c_meta.(metas{i}).Sm;
             curr_consts.T1m = c_meta.(metas{i}).T1m;
             curr_consts.T2m = c_meta.(metas{i}).T2m;
             cmp_obj = CmPartials(curr_consts);
@@ -160,11 +160,11 @@ function [Cm, dCm, md] = CmErrorByMetabolite(params)
             % calculate Gaussian error propagation, dCM
             % using Jacobian and Covariance matrix calculation 
             dCm_meta = []; 
-            for ref_i = 1:numel(er_meta.(metas{i}).dAm)
+            for ref_i = 1:numel(er_meta.(metas{i}).dSm)
 
                 % display progress in console
                 if mod(ref_i,100) == 0
-                    disp(strcat('reference Am index:',int2str(ref_i),'-of-',int2str(numel(er_meta.(metas{i}).dAm))));
+                    disp(strcat('reference Sm index:',int2str(ref_i),'-of-',int2str(numel(er_meta.(metas{i}).dSm))));
                 end
 
                 % construct Jacobian matrix
@@ -177,7 +177,7 @@ function [Cm, dCm, md] = CmErrorByMetabolite(params)
                     end
                 end
                 for all_field_i = 1:numel(fields)
-                    if strcmp(fields{all_field_i},'Am')
+                    if strcmp(fields{all_field_i},'Sm')
                         J = [J partials.(strcat(fields{all_field_i}))];
                     else
                         J = [J partials.(strcat(fields{all_field_i}))];
@@ -189,7 +189,7 @@ function [Cm, dCm, md] = CmErrorByMetabolite(params)
                 for sigma_i = 1:numel(fields)
                     for sigma_j = 1:numel(fields)
                         if sigma_i == sigma_j
-                            if strcmp(fields{sigma_i},'Am')
+                            if strcmp(fields{sigma_i},'Sm')
                                 SIGMA(sigma_i,sigma_j) = er_meta.(metas{i}).(strcat('d',fields{sigma_i}))(ref_i)^2;
                             elseif strcmp(fields{sigma_i},'T1m') || strcmp(fields{sigma_i},'T2m')
                                 SIGMA(sigma_i,sigma_j) = er_meta.(metas{i}).(strcat('d',fields{sigma_i}))^2;

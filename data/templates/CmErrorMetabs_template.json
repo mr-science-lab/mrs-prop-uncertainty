@@ -18,7 +18,7 @@
   },
   "metabolites": {
     "gaba": {
-      "Am": 0,
+      "Sm": 0,
       "T1m": 0,
       "T2m": 0
     }
@@ -44,7 +44,7 @@
       },
       "metabolites": {
         "gaba": {
-          "dAm": 0,
+          "dSm": 0,
           "dT1m": 0,
           "dT2m": 0
         }

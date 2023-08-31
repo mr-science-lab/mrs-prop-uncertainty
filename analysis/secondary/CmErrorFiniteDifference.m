@@ -99,6 +99,6 @@ function CmErrorFiniteDifference(config)
                'FontWeight','normal' );
 
         % save image
-        saveas(fig,strcat(config.paths.res_dir,'finite-difference-approx',param,'.png'));
+        exportgraphics(fig,strcat(config.paths.res_dir,'finite-difference-approx',param,'.png'),'Resolution',2000);
     end
 end

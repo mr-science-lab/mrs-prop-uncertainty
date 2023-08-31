@@ -103,6 +103,11 @@ function CmErrorParamInfluence(config)
             xl.LabelVerticalAlignment = 'bottom';
             if strcmp(metas{i},'gln') && ploti == 1
                 xl.LabelHorizontalAlignment = ' center';
+                xl.FontSize = 16;
+            end
+            if strcmp(metas{i},'glu') && ploti == 1
+                xl.LabelHorizontalAlignment = 'center';
+                xl.FontSize = 16;
             end
 
             if ploti ~= 1
@@ -131,7 +136,7 @@ function CmErrorParamInfluence(config)
         end
 
         % save image
-        saveas(fig,strcat(config.paths.res_dir,'parameter-partial-T1-',int2str(ploti),'.png'));
+        exportgraphics(fig,strcat(config.paths.res_dir,'parameter-partial-T1-',int2str(ploti),'.png'),'Resolution',2000);
 
         % TERM: T2m
         clear c T1m;
@@ -186,7 +191,7 @@ function CmErrorParamInfluence(config)
             xl.FontSize = 18; xl.LineWidth = 2; xl.FontName = 'Calibri';
             xl.LabelHorizontalAlignment = 'left';
             xl.LabelVerticalAlignment = 'top';
-            if (strcmp(metas{i},'gln') || strcmp(metas{i},'gaba'))
+            if (strcmp(metas{i},'gln') || strcmp(metas{i},'gaba') || strcmp(metas{i},'glu'))
                 if ploti == 1
                     xl.LabelHorizontalAlignment = 'center';
                 else
@@ -217,6 +222,6 @@ function CmErrorParamInfluence(config)
         end
 
         % save image
-        saveas(fig,strcat(config.paths.res_dir,'parameter-partial-T2-',int2str(ploti),'.png'));
+        exportgraphics(fig,strcat(config.paths.res_dir,'parameter-partial-T2-',int2str(ploti),'.png'),'Resolution',2000);
     end
 end
