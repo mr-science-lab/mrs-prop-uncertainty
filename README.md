@@ -30,8 +30,7 @@ If you have any comments or questions, please email me directly: ronald.instrell
 ## Citation
 The primary citation for this work is:
 
-[1] Instrella R, Juchem C. Uncertainty propagation in absolute metabolite quantification
-for in vivo magnetic resonance spectroscopy of the human brain. *Magn Reson Med.* 2023 (submitted)
+[1] Instrella R, Juchem C. Uncertainty propagation in absolute metabolite quantification for in vivo MRS of the human brain. *Magn Reson Med.* 2023;1-17. doi:10.1002/mrm.29903
 
 ## Selected References
 
