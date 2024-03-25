@@ -32,8 +32,8 @@
 %          Please reference the following paper if used or adapted,
 %
 %          Instrella R, Juchem C. Uncertainty propagation in absolute metabolite 
-%          quantification for in vivo magnetic resonance spectroscopy of the 
-%          human brain. Magn Reson Med. 2023 (under review)
+%          quantification for in vivo MRS of the human brain. Magn Reson Med. 
+%          2024;91(4):1284-1300. doi:10.1002/mrm.29903
 %
 % Corresponding Author:   Ronald Instrella, M.S.
 % Principal Investigator: Christoph Juchem, Ph.D.
